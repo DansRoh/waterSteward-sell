@@ -1,0 +1,126 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/signedClient/signedClient",
+			"style": {
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/register/register",
+			"style": {
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/mine/mine",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/myCode/myCode",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/writeClientInfo/writeClientInfo",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/clientList/clientList",
+			"style": {
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/uploadSignPhoto/uploadSignPhoto",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/clientDetail/clientDetail",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/clientInfoEdit/clientInfoEdit",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/accountManage/accountManage",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/billDetail/billDetail",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8",
+		"usingComponents": {
+			"van-field": "/wxcomponents/@vant/field/index",
+			"van-cell": "/wxcomponents/@vant/cell/index",
+			"van-cell-group": "/wxcomponents/@vant/cell-group/index",
+			"van-button": "/wxcomponents/@vant/button",
+			"van-checkbox": "/wxcomponents/@vant/checkbox/index",
+			"van-checkbox-group": "/wxcomponents/@vant/checkbox-group/index",
+			"van-search": "/wxcomponents/@vant/search/index",
+			"van-icon": "/wxcomponents/@vant/icon/index",
+			"van-popup": "/wxcomponents/@vant/popup/index",
+			"van-area": "/wxcomponents/@vant/area/index",
+			"van-calendar": "/wxcomponents/@vant/calendar/index",
+			"van-steps": "/wxcomponents/@vant/steps/index",
+			"van-divider": "/wxcomponents/@vant/divider/index",
+			"van-image": "/wxcomponents/@vant/image/index"
+		}
+	},
+	"uniIdRouter": {},
+	"tabBar": {
+		"color": "#999999",
+		"selectedColor": "#343434",
+		"borderStyle": "white",
+		"backgroundColor": "#F7F7F7",
+		"list": [{
+			"pagePath": "pages/signedClient/signedClient",
+			"iconPath": "static/images/tabbar/01_tab.png",
+			"selectedIconPath": "static/images/tabbar/01_tab_active.png",
+			"text": "签约客户"
+		}, {
+			"pagePath": "pages/clientList/clientList",
+			"iconPath": "static/images/tabbar/02_tab.png",
+			"selectedIconPath": "static/images/tabbar/02_tab_active.png",
+			"text": "列表"
+		}, {
+			"pagePath": "pages/mine/mine",
+			"iconPath": "static/images/tabbar/03_tab.png",
+			"selectedIconPath": "static/images/tabbar/03_tab_active.png",
+			"text": "我的"
+		}]
+	}
+}
