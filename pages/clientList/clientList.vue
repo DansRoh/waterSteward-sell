@@ -13,14 +13,14 @@
 		<view class="top-search-box">
 			<view class="custom-search">
 				<input placeholder-class="custom-search-place-class" class="search-input" type="text" placeholder="请输入姓名、电话…">
-				<van-icon class="search-icon" name="/static/images/tabbar/03_tab.png"></van-icon>
+				<van-icon class="search-icon" size="48rpx" name="/static/icon/36_search.png"></van-icon>
 			</view>
 			<view class="timer-picker">
 				<picker mode="selector" range-key="name" @change="pickerChange" :value="curPickTimerIdx"
 					:range="timerPickerArray">
 					<view class="fs24 c000">
 						{{timerPickerArray[curPickTimerIdx].name || "最近三个月"}}
-						<van-icon name="/static/images/tabbar/03_tab.png"></van-icon>
+						<van-icon size="25rpx" name="/static/icon/04_del.png"></van-icon>
 					</view>
 				</picker>
 			</view>
@@ -28,8 +28,8 @@
 		<view class="client-list-box">
 			<view class="client-info-card">
 				<view class="top-status-box">
-					<van-icon size="32rpx" name="/static/images/tabbar/03_tab.png"></van-icon>
-					<view>
+					<van-icon size="32rpx" name="/static/icon/37_clock.png"></van-icon>
+					<view class="ml16">
 						待测信号…
 					</view>
 				</view>

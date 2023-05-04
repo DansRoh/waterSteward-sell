@@ -19,13 +19,17 @@
 			<van-field title-width="104rpx" @change="veriCodeChange"
 				custom-style="border: 2rpx solid #828698;padding:0;padding-left:34rpx;align-items:center;border-radius: 8rpx;overflow:hidden;"
 				size="large" label="验证码" label-class="custom-label" :value="veriCode" clearable>
-				<van-button custom-style="width: 208rpx" @click="handleClickGetVericodeBtn" type="primary" color="#383838"
-					slot="button">{{vericodeBtnText}}</van-button>
+				<van-button custom-style="width: 208rpx" :disabled="isVericodeBtnDisable" @click="handleClickGetVericodeBtn"
+					type="primary" color="#383838" slot="button">{{vericodeBtnText}}</van-button>
 			</van-field>
 		</van-cell-group>
 		<van-button class="mt30" type="primary" color="#FFD242" @click="handleClickLogin" :disabled="isDisabledLogin"
 			custom-style="width: 592rpx;font-size:36rpx;height: 112rpx;color:#383838;" round>登录</van-button>
-		<van-checkbox class="mt244" :value="isAgree" @change="(e)=>{isAgree = e.detail}" shape="square">
+		<view class="go-register-box">
+			没有账号?
+			<view @click="jumpRegister" class="c7A6AF4">去注册</view>
+		</view>
+		<van-checkbox class="mt200" :value="isAgree" @change="(e)=>{isAgree = e.detail}" shape="square">
 			“净水器项目”相关信息与免责协议
 		</van-checkbox>
 	</view>
@@ -44,18 +48,14 @@
 				isAgree: false,
 				vericodeBtnText: '获取验证码',
 				isVericodeBtnDisable: false,
-				ptHeight: 60
+				ptHeight: 60,
+				isDisabledLogin: false,
 			};
 		},
 		onLoad() {
 			const ptHeight = uni.getStorageSync('navHeight')
 			if (ptHeight) {
 				this.ptHeight = ptHeight
-			}
-		},
-		computed: {
-			isDisabledLogin() {
-				return !(this.phoneNum && this.veriCode && this.isAgree)
 			}
 		},
 		methods: {
@@ -66,8 +66,29 @@
 				this.veriCode = e.detail
 			},
 			handleClickLogin() {
+				if (!this.phoneNum) {
+					uni.showToast({
+						title: '请填写手机号',
+						icon: 'error'
+					})
+					return
+				}
+				if (!this.veriCode) {
+					uni.showToast({
+						title: '请填写验证码',
+						icon: 'error'
+					})
+					return
+				}
+				if (!this.isAgree) {
+					uni.showToast({
+						title: '请阅读并同意协议',
+						icon: 'error'
+					})
+					return
+				}
 				uni.setStorageSync('isLogin', true)
-				uni.navigateTo({
+				uni.switchTab({
 					url: "/pages/signedClient/signedClient"
 				})
 			},
@@ -85,6 +106,11 @@
 						num--;
 					}
 				}, 1000)
+			},
+			jumpRegister() {
+				uni.navigateTo({
+					url: '/pages/register/register'
+				})
 			}
 		}
 	}
@@ -120,6 +146,13 @@
 				font-size: 28rpx;
 				color: #828698;
 			}
+		}
+
+		.go-register-box {
+			margin-top: 50rpx;
+			display: flex;
+			font-size: 30rpx;
+			color: #5E5E5E;
 		}
 	}
 </style>

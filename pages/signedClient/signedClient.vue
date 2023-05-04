@@ -10,9 +10,9 @@
 				</view>
 			</view>
 		</navbar>
-		<view class="write-client-info mt30">
-			<van-icon size="80rpx" name="/static/images/tabbar/03_tab.png"></van-icon>
-			<view @click="jumpWriteClientInfoPage" class="click-text fs48 c828698 mt30">
+		<view @click="jumpWriteClientInfoPage" class="write-client-info mt30">
+			<van-icon size="80rpx" name="/static/icon/35_add.png"></van-icon>
+			<view class="click-text fs48 c828698 mt30">
 				点击录入
 				客户信息
 			</view>

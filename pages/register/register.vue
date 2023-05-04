@@ -27,11 +27,11 @@
 			<van-field title-width="110rpx" @change="changeField('veriCode', $event)"
 				custom-style="border: 2rpx solid #828698;padding:0;padding-left:34rpx;align-items:center;border-radius: 8rpx;overflow:hidden;"
 				size="large" label="验证码" label-class="custom-label" :value="userInfo.veriCode" clearable>
-				<van-button custom-style="width: 208rpx" type="primary" color="#383838" slot="button"
+				<van-button custom-style="width: 208rpx" type="primary" color="#383838" slot="button" :disabled="isVericodeBtnDisable"
 					@click="handleClickGetVericodeBtn">{{vericodeBtnText}}</van-button>
 			</van-field>
 		</van-cell-group>
-		<van-button @click="handleClickRegister" :disabled="isDisabledRegister" class="mt30" type="primary" color="#FFD242"
+		<van-button @click="handleClickRegister" class="mt30" type="primary" color="#FFD242"
 			custom-style="width: 592rpx;font-size:36rpx;height: 112rpx;color:#383838;" round>确认注册</van-button>
 		<view class="go-login-box">
 			已有账号?
@@ -78,6 +78,15 @@
 		methods: {
 			handleClickRegister() {
 				// 注册
+				if (this.isDisabledRegister) {
+					uni.showToast({
+						title: '请填写完整信息',
+						icon: 'error'
+					})
+				}
+				uni.navigateTo({
+					url:'/pages/login/login'
+				})
 			},
 			handleClickGetVericodeBtn() {
 				this.isVericodeBtnDisable = true;
@@ -131,14 +140,16 @@
 				color: #828698;
 			}
 		}
+
 		.go-login-box {
 			margin-top: 176rpx;
 			display: flex;
 			font-size: 30rpx;
 			color: #5E5E5E;
 		}
+
 		.navigator-hover {
-		  color:blue;
+			color: blue;
 		}
 	}
 </style>
