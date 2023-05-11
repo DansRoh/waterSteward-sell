@@ -1,38 +1,27 @@
 <template>
-	<view class="page-register" :style="{paddingTop: ptHeight+'px'}">
+	<view class="page-register">
 		<navbar>
-			<view class="df aic c5e" slot="left-box">
-				<van-image width="208rpx" height="40rpx" src="/static/icon/10_waterStewardText.png"></van-image>
-				<view class="cue-divider mr16 ml16">
-				</view>
-				<view class="fs36 c5e">
-					销售端
-				</view>
+			<view slot="content" class="custon-nav-content">
+				<van-image class="left-box" width="208rpx" height="52rpx" src="/static/logo.png"></van-image>
 			</view>
 		</navbar>
-		<van-image width="100vw" height="446rpx" src="/static/images/01_banner.png"></van-image>
-		<van-cell-group custom-class="cus-cell-group-class">
-			<van-field title-width="110rpx" @change="changeField('userName', $event)"
-				custom-style="border: 2rpx solid #828698;margin-bottom:30rpx;border-radius: 8rpx;overflow:hidden;" size="large"
-				label="姓名" label-class="custom-label" :value="userInfo.userName" clearable>
-			</van-field>
-			<van-field title-width="110rpx" @change="changeField('idNum', $event)"
-				custom-style="border: 2rpx solid #828698;margin-bottom:30rpx;border-radius: 8rpx;overflow:hidden;" size="large"
-				label="身份证号" label-class="custom-label" :value="userInfo.idNum" clearable>
-			</van-field>
-			<van-field title-width="110rpx" @change="changeField('phoneNum', $event)"
-				custom-style="border: 2rpx solid #828698;margin-bottom:30rpx;border-radius: 8rpx;overflow:hidden;" size="large"
-				label="手机号" label-class="custom-label" :value="userInfo.phoneNum" clearable>
-			</van-field>
-			<van-field title-width="110rpx" @change="changeField('veriCode', $event)"
-				custom-style="border: 2rpx solid #828698;padding:0;padding-left:34rpx;align-items:center;border-radius: 8rpx;overflow:hidden;"
-				size="large" label="验证码" label-class="custom-label" :value="userInfo.veriCode" clearable>
-				<van-button custom-style="width: 208rpx" type="primary" color="#383838" slot="button" :disabled="isVericodeBtnDisable"
-					@click="handleClickGetVericodeBtn">{{vericodeBtnText}}</van-button>
-			</van-field>
-		</van-cell-group>
-		<van-button @click="handleClickRegister" class="mt30" type="primary" color="#FFD242"
-			custom-style="width: 592rpx;font-size:36rpx;height: 112rpx;color:#383838;" round>确认注册</van-button>
+
+		<van-image width="100vw" height="446rpx" src="/static/images/01_register_banner.png"></van-image>
+		<view class="inp-list">
+			<cus-input type="text" custom-class="cus-input" label="姓名" :value="userInfo.name"
+				@input="bindInput('name', $event)" hasBorder></cus-input>
+			<cus-input type="text" custom-class="cus-input" label="身份证" :value="userInfo.id" @input="bindInput('id',$event)"
+				hasBorder></cus-input>
+			<cus-input type="number" custom-class="cus-input" label="手机号" :value="userInfo.phone"
+				@input="bindInput('phone',$event)" hasBorder></cus-input>
+			<cus-input type="number" custom-class="cus-input" label="验证码" :value="userInfo.veriCode"
+				@input="bindInput('veriCode',$event)" hasBorder>
+				<van-button custom-style="width: 208rpx" type="primary" color="#383838" slot="right"
+					:disabled="isVericodeBtnDisable" @click="handleClickGetVericodeBtn">{{vericodeBtnText}}</van-button>
+			</cus-input>
+		</view>
+		<van-button @click="handleClickRegister" class="mt30" type="primary" color="#FFD242" :disabled="isConfirmBtnDisable"
+			custom-style="width: 592rpx;font-size:36rpx;height: 110rpx;color:#383838;" round>确认注册</van-button>
 		<view class="go-login-box">
 			已有账号?
 			<view @click="jumpLogin" class="c7A6AF4">去登录</view>
@@ -41,54 +30,51 @@
 </template>
 
 <script>
+	import cusInput from '../../components/cus-input/cus-input.vue'
+	import {
+		isValidPhoneNumber
+	} from '../../utils/tool.js'
 	export default {
+		components: {
+			cusInput
+		},
 		data() {
 			return {
 				phoneNum: '',
 				veriCode: '',
 				userInfo: {
-					userName: '',
-					idNum: '',
-					phoneNum: '',
+					name: '',
+					id: '',
+					phone: '',
 					veriCode: ''
 				},
 				vericodeBtnText: '发送验证码',
 				isVericodeBtnDisable: false,
 				isAgree: false,
-				ptHeight: 60
 			};
 		},
-		onLoad() {
-			const ptHeight = uni.getStorageSync('navHeight')
-			if (ptHeight) {
-				this.ptHeight = ptHeight
-			}
-		},
 		computed: {
-			isDisabledRegister() {
-				const {
-					userName,
-					idNum,
-					phoneNum,
-					veriCode
-				} = this.userInfo
-				return !(userName, idNum, phoneNum, veriCode)
+			isConfirmBtnDisable() {
+				return Object.values(this.userInfo).some(val => val === '')
 			}
 		},
 		methods: {
+			bindInput(key, value) {
+				this.userInfo[key] = value
+			},
 			handleClickRegister() {
-				// 注册
-				if (this.isDisabledRegister) {
-					uni.showToast({
-						title: '请填写完整信息',
-						icon: 'error'
-					})
-				}
 				uni.navigateTo({
-					url:'/pages/login/login'
+					url: '/pages/login/login'
 				})
 			},
 			handleClickGetVericodeBtn() {
+				if (!isValidPhoneNumber(this.userInfo.phone)) {
+					uni.showToast({
+						title: '手机号格式有误',
+						icon: 'error'
+					})
+					return
+				}
 				this.isVericodeBtnDisable = true;
 				this.vericodeBtnText = "剩余60s"
 				let num = 59
@@ -102,6 +88,8 @@
 						num--;
 					}
 				}, 1000)
+
+				// 发送获取验证码请求
 			},
 			changeField(keyName, $event) {
 				this.userInfo[keyName] = $event.detail
@@ -124,10 +112,18 @@
 		flex-direction: column;
 		align-items: center;
 
-		.register-poster {
-			width: 100vw;
-			height: 446rpx;
-			border: 1px solid;
+		.cus-input {
+			width: 624rpx;
+			height: 80rpx;
+			margin-top: 30rpx;
+		}
+
+		.custon-nav-content {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			align-items: flex-end;
+			padding-left: 40rpx;
 		}
 
 		.cus-cell-group-class {
