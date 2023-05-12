@@ -1,52 +1,74 @@
 <template>
-	<view class="page-signedClient" :style="{paddingTop: ptHeight+15+'px'}">
-		<navbar>
-			<view class="df aic c5e" slot="left-box">
-				<van-image width="208rpx" height="40rpx" src="/static/icon/10_waterStewardText.png"></van-image>
-				<view class="cue-divider mr16 ml16">
+	<view class="page-signedClient">
+		<Navbar>
+			<view slot="content" class="custon-nav-content">
+				<van-image class="left-box" width="208rpx" height="52rpx" src="/static/logo.png"></van-image>
+			</view>
+		</Navbar>
+		<view class="top-search-box">
+			<CusInput :value="searchValue" @input="bindInput" @confirm="handleSearch" @tapIcon="handleSearch" custom-class="cus-search-input"
+				placeholder="请输入姓名,电话..." hasBorder icon="/static/images/03_search.png"></CusInput>
+		</view>
+
+		<view class="code-wrapper-box">
+			<view class="inner-box">
+				<view class="title">
+					专属签约码
 				</view>
-				<view class="fs36 c5e">
-					销售端
+				<view class="code-num-box">
+					<view v-for="item in codeNum" :key="item" class="item-box">
+						{{item}}
+					</view>
+				</view>
+				<view class="my-code-box">
+					<view class="code-inner">
+
+					</view>
+					<view class="tac fs28 c5e">
+						我的签约二维码
+					</view>
+				</view>
+
+				<view class="share-menu fs28 c828698">
+					<view class="share-item">
+						<van-icon name="/static/images/04_wechat.png" size="96rpx"></van-icon>
+						<view class="mt10">
+							微信好友
+						</view>
+					</view>
+					<view class="share-item">
+						<van-icon name="/static/images/05_loadicon.png" size="96rpx"></van-icon>
+						<view class="mt10">
+							下载
+						</view>
+					</view>
 				</view>
 			</view>
-		</navbar>
-		<view @click="jumpWriteClientInfoPage" class="write-client-info mt30">
-			<van-icon size="80rpx" name="/static/icon/35_add.png"></van-icon>
-			<view class="click-text fs48 c828698 mt30">
-				点击录入
-				客户信息
-			</view>
-			<van-icon @click="jumpMyCode" class="icon-my-code" size="190rpx"
-				name="/static/images/03_myCodeBtn.png"></van-icon>
 		</view>
 	</view>
 </template>
 
 <script>
+	import Navbar from '../../components/navbar/navbar.vue'
+	import CusInput from '../../components/cus-input/cus-input.vue'
 	export default {
+		components: {
+			Navbar,
+			CusInput
+		},
 		data() {
 			return {
-				value: '',
-				curPickTimerIdx: 0,
-				ptHeight: 60
+				searchValue: '',
+				codeNum: "198777"
 			};
 		},
-		onLoad() {
-			const ptHeight = uni.getStorageSync('navHeight')
-			if (ptHeight) {
-				this.ptHeight = ptHeight
-			}
-		},
+		onLoad() {},
 		methods: {
-			jumpMyCode() {
-				uni.navigateTo({
-					url: "/pages/myCode/myCode"
-				})
+			bindInput(e) {
+				this.searchValue = e
 			},
-			jumpWriteClientInfoPage() {
-				uni.navigateTo({
-					url: "/pages/writeClientInfo/writeClientInfo"
-				})
+			handleSearch() {
+				console.log('搜索', this.searchValue);
 			}
 		}
 	}
@@ -58,32 +80,92 @@
 		background-color: #F2F4F7;
 		box-sizing: border-box;
 		padding: 30rpx;
-		.cue-divider {
-			width: 2rpx;
-			height: 34rpx;
-			background-color: #5E5E5E;
-		}
-		.write-client-info {
-			position: relative;
-			background-color: #fff;
-			width: 688rpx;
-			height: 1044rpx;
-			border-radius: 28rpx;
-			border: 2rpx solid #DCDCDC;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
+		padding-top: 0;
 
-			.click-text {
-				width: 192rpx;
+		.custon-nav-content {
+			height: 100%;
+			padding-left: 30rpx;
+			display: flex;
+			align-items: flex-end;
+		}
+
+		.top-search-box {
+			margin-top: 50rpx;
+			margin-bottom: 60rpx;
+
+			.cus-search-input {
+				height: 80rpx;
+				border-radius: 40rpx;
+			}
+		}
+
+		.code-wrapper-box {
+			background-color: #F2F4F7;
+
+			.title {
+				padding-bottom: 70rpx;
+				font-size: 48rpx;
+				color: #262626;
 			}
 
-			.icon-my-code {
-				position: absolute;
-				bottom: -95rpx;
-				left: 50%;
-				transform: translateX(-50%);
+			.inner-box {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				padding: 60rpx;
+				background-color: #fff;
+				box-shadow: 0rpx 32rpx 40rpx 0rpx #DAE0EA;
+				border-radius: 28rpx;
+
+				.code-num-box {
+					margin-bottom: 78rpx;
+					width: 512rpx;
+					display: flex;
+					justify-content: space-between;
+
+					.item-box {
+						width: 72rpx;
+						height: 72rpx;
+						font-size: 39rpx;
+						border-radius: 2rpx;
+						border: 2rpx solid rgba(206, 207, 208, 0.53);
+						color: #17DA9C;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+					}
+				}
+
+				.my-code-box {
+					width: 456rpx;
+					height: 456rpx;
+					background: #FFFFFF;
+					border-radius: 16rpx;
+					border: 2rpx solid #CECFD0;
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					justify-content: space-evenly;
+
+					.code-inner {
+						width: 274rpx;
+						height: 274rpx;
+						border: 1px solid;
+					}
+				}
+
+				.share-menu {
+					display: flex;
+					justify-content: space-evenly;
+					width: 524rpx;
+					margin-top: 76rpx;
+
+					.share-item {
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+					}
+				}
 			}
 		}
 	}

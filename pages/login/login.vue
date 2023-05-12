@@ -57,12 +57,6 @@
 			bindInput(key, value) {
 				this.formData[key] = value
 			},
-			phoneNumChange(e) {
-				this.phoneNum = e.detail
-			},
-			veriCodeChange(e) {
-				this.veriCode = e.detail
-			},
 			handleClickLogin() {
 				if (!this.isAgree) {
 					uni.showToast({
