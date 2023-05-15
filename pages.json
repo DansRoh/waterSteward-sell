@@ -108,18 +108,18 @@
 		"backgroundColor": "#F7F7F7",
 		"list": [{
 			"pagePath": "pages/signedClient/signedClient",
-			"iconPath": "static/images/tabbar/01_tab.png",
-			"selectedIconPath": "static/images/tabbar/01_tab_active.png",
+			"iconPath": "static/icon/01_tabbar.png",
+			"selectedIconPath": "static/icon/01_tabbar_active.png",
 			"text": "签约客户"
 		}, {
 			"pagePath": "pages/clientList/clientList",
-			"iconPath": "static/images/tabbar/02_tab.png",
-			"selectedIconPath": "static/images/tabbar/02_tab_active.png",
+			"iconPath": "static/icon/02_tabbar.png",
+			"selectedIconPath": "static/icon/02_tabbar_active.png",
 			"text": "列表"
 		}, {
 			"pagePath": "pages/mine/mine",
-			"iconPath": "static/images/tabbar/03_tab.png",
-			"selectedIconPath": "static/images/tabbar/03_tab_active.png",
+			"iconPath": "static/icon/03_tabbar.png",
+			"selectedIconPath": "static/icon/03_tabbar_active.png",
 			"text": "我的"
 		}]
 	}

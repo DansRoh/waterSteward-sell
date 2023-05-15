@@ -3,6 +3,9 @@
 		<view class="navbar"
 			:style="{height: navigationBarHeight + statusBarHeight + 'px', paddingTop: statusBarHeight + 'px', paddingRight: navigationPaddingRight + 'px'}">
 			<!-- 在这里添加你的自定义导航栏内容 -->
+			<view class="def-slot">
+
+			</view>
 			<slot name="content"></slot>
 		</view>
 
