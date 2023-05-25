@@ -12,7 +12,7 @@
 					18716353540
 				</view>
 				<van-button custom-class="custom-btn-class" color="#7A6AF4" round>
-					我的专属签约码
+					我的专属签约码 
 				</van-button>
 			</view>
 			<van-cell custom-class="custom-cell" title-class="custom-title" title="账户管理" is-link url="/pages/accountManage/accountManage"/>
@@ -48,7 +48,6 @@
 
 <style lang="less">
 	.page-mine {
-		position: relative;
 
 		.mine-bg-banner {}
 

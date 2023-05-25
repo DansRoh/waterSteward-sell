@@ -42,6 +42,27 @@ export function isValidPhoneNumber(phoneNumber) {
 	return regex.test(phoneNumber);
 }
 
+// 身份证校验
+export function validateIdNumber(idNumber) {
+	// 正则表达式匹配规则
+	var pattern = /^[1-9]\d{5}(19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|(3[0-1]))\d{3}[0-9xX]$/;
+
+	// 判断是否为合法字符串
+	if (!pattern.test(idNumber)) {
+		return false;
+	}
+
+	// 验证身份证最后一位校验码
+	var lastCode = idNumber.charAt(17).toUpperCase();
+	var calcCode = 0;
+	for (var i = 0; i < 17; i++) {
+		calcCode += parseInt(idNumber.charAt(i)) * Math.pow(2, 17 - i - 1) % 11;
+	}
+	var checkCode = "10X98765432".charAt(calcCode % 11);
+
+	return lastCode === checkCode;
+}
+
 // 时间格式转换
 export function formatDateTime(dateTimeString) {
 	const date = new Date(dateTimeString);

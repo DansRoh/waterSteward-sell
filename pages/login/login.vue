@@ -30,6 +30,9 @@
 <script>
 	import navbar from '@/components/navbar/navbar.vue';
 	import cusInput from '../../components/cus-input/cus-input.vue'
+	import {
+		isValidPhoneNumber
+	} from '../../utils/tool.js'
 	export default {
 		components: {
 			navbar,
@@ -51,13 +54,20 @@
 				return Object.values(this.formData).some(val => val === '')
 			}
 		},
-		onLoad() {
-		},
+		onLoad() {},
 		methods: {
 			bindInput(key, value) {
 				this.formData[key] = value
 			},
 			handleClickLogin() {
+				// 校验数据
+				if (!isValidPhoneNumber(this.formData.phone)) {
+					uni.showToast({
+						title: '手机号格式有误',
+						icon: 'error'
+					})
+					return
+				}
 				if (!this.isAgree) {
 					uni.showToast({
 						title: '请阅读并同意协议',
@@ -71,6 +81,15 @@
 				})
 			},
 			handleClickGetVericodeBtn() {
+				// 校验数据
+				if (!isValidPhoneNumber(this.formData.phone)) {
+					uni.showToast({
+						title: '手机号格式有误',
+						icon: 'error'
+					})
+					return
+				}
+				
 				this.isVericodeBtnDisable = true;
 				this.vericodeBtnText = "剩余60s"
 				let num = 59
@@ -102,6 +121,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+
 		.custon-nav-content {
 			width: 100%;
 			height: 100%;
@@ -117,6 +137,7 @@
 				margin-top: 30rpx;
 			}
 		}
+
 		.go-register-box {
 			margin-top: 50rpx;
 			display: flex;

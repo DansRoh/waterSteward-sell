@@ -5,11 +5,6 @@
 				<van-image class="left-box" width="208rpx" height="52rpx" src="/static/logo.png"></van-image>
 			</view>
 		</Navbar>
-		<view class="top-search-box">
-			<CusInput :value="searchValue" @input="bindInput" @confirm="handleSearch" @tapIcon="handleSearch" custom-class="cus-search-input"
-				placeholder="请输入姓名,电话..." hasBorder icon="/static/images/03_search.png"></CusInput>
-		</view>
-
 		<view class="code-wrapper-box">
 			<view class="inner-box">
 				<view class="title">
@@ -31,9 +26,13 @@
 
 				<view class="share-menu fs28 c828698">
 					<view class="share-item">
-						<van-icon name="/static/images/04_wechat.png" size="96rpx"></van-icon>
-						<view class="mt10">
-							微信好友
+						<view>
+							<button class="share-btn" open-type="share">
+								<van-icon name="/static/images/04_wechat.png" size="96rpx"></van-icon>
+								<view class="mt10">
+									微信好友
+								</view>
+							</button>
 						</view>
 					</view>
 					<view class="share-item">
@@ -58,17 +57,25 @@
 		},
 		data() {
 			return {
-				searchValue: '',
 				codeNum: "198777"
 			};
 		},
 		onLoad() {},
 		methods: {
-			bindInput(e) {
-				this.searchValue = e
-			},
-			handleSearch() {
-				console.log('搜索', this.searchValue);
+			onShareAppMessage() {
+				const promise = new Promise(resolve => {
+					setTimeout(() => {
+						resolve({
+							title: '自定义转发标题',
+							path: '/pages/myCode/myCode',
+						})
+					}, 0)
+				})
+				return {
+					title: '你好',
+					path: '/pages/clientList/clientList',
+					promise
+				}
 			}
 		}
 	}
@@ -80,23 +87,12 @@
 		background-color: #F2F4F7;
 		box-sizing: border-box;
 		padding: 30rpx;
-		padding-top: 0;
 
 		.custon-nav-content {
 			height: 100%;
 			padding-left: 30rpx;
 			display: flex;
 			align-items: flex-end;
-		}
-
-		.top-search-box {
-			margin-top: 50rpx;
-			margin-bottom: 60rpx;
-
-			.cus-search-input {
-				height: 80rpx;
-				border-radius: 40rpx;
-			}
 		}
 
 		.code-wrapper-box {
@@ -164,6 +160,19 @@
 						display: flex;
 						flex-direction: column;
 						align-items: center;
+
+						.share-btn {
+							line-height: unset;
+							font-size: 28rpx;
+							color: #828698;
+							display: flex;
+							flex-direction: column;
+							align-items: center;
+							background-color: #fff;
+						}
+						.share-btn::after {
+							border: none;
+						}
 					}
 				}
 			}

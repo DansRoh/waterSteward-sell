@@ -99,7 +99,6 @@
 		display: flex;
 		align-items: center;
 		padding: 20rpx 0;
-		padding-right: 20rpx;
 		background-color: #fff;
 	}
 

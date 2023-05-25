@@ -32,7 +32,8 @@
 <script>
 	import cusInput from '../../components/cus-input/cus-input.vue'
 	import {
-		isValidPhoneNumber
+		isValidPhoneNumber,
+		validateIdNumber
 	} from '../../utils/tool.js'
 	export default {
 		components: {
@@ -62,7 +63,22 @@
 			bindInput(key, value) {
 				this.userInfo[key] = value
 			},
+			// 注册
 			handleClickRegister() {
+				if (!validateIdNumber(this.userInfo.id)) {
+					uni.showToast({
+						title: '身份证格式有误',
+						icon: 'error'
+					})
+					return
+				}
+				if (!isValidPhoneNumber(this.userInfo.phone)) {
+					uni.showToast({
+						title: '手机号格式有误',
+						icon: 'error'
+					})
+					return
+				}
 				uni.navigateTo({
 					url: '/pages/login/login'
 				})
