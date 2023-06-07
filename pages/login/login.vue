@@ -54,7 +54,6 @@
 				return Object.values(this.formData).some(val => val === '')
 			}
 		},
-		onLoad() {},
 		methods: {
 			bindInput(key, value) {
 				this.formData[key] = value
@@ -75,6 +74,7 @@
 					})
 					return
 				}
+
 				uni.setStorageSync('isLogin', true)
 				uni.switchTab({
 					url: "/pages/signedClient/signedClient"
@@ -89,7 +89,7 @@
 					})
 					return
 				}
-				
+
 				this.isVericodeBtnDisable = true;
 				this.vericodeBtnText = "剩余60s"
 				let num = 59

@@ -124,7 +124,8 @@
 		border: 2rpx solid #828698;
 	}
 	.icon {
-		margin-left: 10px;
+		margin-left: 20rpx;
+		margin-right: 20rpx;
 		width: 48rpx;
 		height: 48rpx;
 	}
