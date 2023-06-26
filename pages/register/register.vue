@@ -10,12 +10,12 @@
 		<view class="inp-list">
 			<cus-input type="text" custom-class="cus-input" label="姓名" :value="userInfo.name"
 				@input="bindInput('name', $event)" hasBorder></cus-input>
-			<cus-input type="text" custom-class="cus-input" label="身份证" :value="userInfo.id" @input="bindInput('id',$event)"
-				hasBorder></cus-input>
+			<cus-input type="text" custom-class="cus-input" label="身份证" :value="userInfo.id_card"
+				@input="bindInput('id_card',$event)" hasBorder></cus-input>
 			<cus-input type="number" custom-class="cus-input" label="手机号" :value="userInfo.phone"
 				@input="bindInput('phone',$event)" hasBorder></cus-input>
-			<cus-input type="number" custom-class="cus-input" label="验证码" :value="userInfo.veriCode"
-				@input="bindInput('veriCode',$event)" hasBorder>
+			<cus-input type="number" custom-class="cus-input" label="验证码" :value="userInfo.code"
+				@input="bindInput('code',$event)" hasBorder>
 				<van-button custom-style="width: 208rpx" type="primary" color="#383838" slot="right"
 					:disabled="isVericodeBtnDisable" @click="handleClickGetVericodeBtn">{{vericodeBtnText}}</van-button>
 			</cus-input>
@@ -41,13 +41,12 @@
 		},
 		data() {
 			return {
-				phoneNum: '',
-				veriCode: '',
+				code: '',
 				userInfo: {
 					name: '',
-					id: '',
+					id_card: '',
 					phone: '',
-					veriCode: ''
+					code: ''
 				},
 				vericodeBtnText: '发送验证码',
 				isVericodeBtnDisable: false,
@@ -64,8 +63,17 @@
 				this.userInfo[key] = value
 			},
 			// 注册
-			handleClickRegister() {
-				if (!validateIdNumber(this.userInfo.id)) {
+			async handleClickRegister() {
+				for (let key in this.userInfo) {
+					if(!this.userInfo[key]) {
+						uni.showToast({
+							title: '请填写完整信息',
+							icon:'error'
+						})
+						return
+					}
+				}
+				if (!validateIdNumber(this.userInfo.id_card)) {
 					uni.showToast({
 						title: '身份证格式有误',
 						icon: 'error'
@@ -79,11 +87,21 @@
 					})
 					return
 				}
-				uni.navigateTo({
-					url: '/pages/login/login'
-				})
+				const {
+					data,
+					statusCode
+				} = this.$http('/market/profile', 'post', this.userInfo)
+				console.log('stat', statusCode);
+				if (statusCode === 201) {
+					console.log(data);
+				} else {
+					uni.showToast({
+						title: '网络错误',
+						icon: 'error'
+					})
+				}
 			},
-			handleClickGetVericodeBtn() {
+			async handleClickGetVericodeBtn() {
 				if (!isValidPhoneNumber(this.userInfo.phone)) {
 					uni.showToast({
 						title: '手机号格式有误',
@@ -106,6 +124,13 @@
 				}, 1000)
 
 				// 发送获取验证码请求
+				const {
+					data,
+					statusCode
+				} = await this.$http('/market/verify_codes/register', 'post', {
+					phone: this.userInfo.phone,
+					debug: true
+				})
 			},
 			changeField(keyName, $event) {
 				this.userInfo[keyName] = $event.detail

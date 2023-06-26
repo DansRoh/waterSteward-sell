@@ -9,6 +9,8 @@
 				uni.redirectTo({
 					url: '/pages/register/register'
 				})
+			} else {
+				this.$store.dispatch('getUserInfoSync')
 			}
 		},
 		onShow: function() {

@@ -7,8 +7,7 @@
 		<view class="mine-content">
 			<view class="mine-card c26">
 				<view class="avatar-box">
-					<image class="avatar-img" src="../../static/images/07_defaultAvatar.png" mode=""></image>
-					<image class="camera-img" src="../../static/images/08_camera.png" mode=""></image>
+					<image @tap="handleChangeAvatar" class="avatar-img" :src="avatarUrl" mode=""></image>
 				</view>
 				<view class="fs36 mt110">
 					李泉
@@ -29,17 +28,15 @@
 </template>
 
 <script>
+	import {
+		baseURL
+	} from "../../config/index.js"
 	export default {
 		data() {
 			return {
-				ptHeight: 60
 			};
 		},
 		onLoad() {
-			const ptHeight = uni.getStorageSync('navHeight')
-			if (ptHeight) {
-				this.ptHeight = ptHeight
-			}
 		},
 		onShow() {
 			// 判断是否登录的逻辑
@@ -50,6 +47,57 @@
 				})
 			}
 		},
+		computed: {
+			userInfo() {
+				return this.$store.state.userInfo
+			},
+			avatarUrl() {
+				return this.userInfo.avatar_url || '../../static/images/07_defaultAvatar.png'
+			}
+		},
+		methods: {
+			async handleChangeAvatar() {
+				// 选择图片
+				const {
+					tempFilePaths
+				} = await uni.chooseImage({
+					count: 1, // 最多可以选择的图片张数
+					sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+				});
+				// 图片上传到服务器
+				try {
+					const {
+						statusCode,
+						data
+					} = await uni.uploadFile({
+						url: baseURL + '/market/profile/avatar', // 你的头像上传接口地址
+						filePath: tempFilePaths[0],
+						header: {
+							'Authorization': 'Token ' + uni.getStorageSync("token"),
+							'Content-Type': 'multipart/form-data',
+							'Accept': 'application/json;version=1'
+						},
+						name: 'avatar',
+					});
+							
+					if (statusCode !== 201) {
+						uni.showToast({
+							title: '上传失败',
+							icon: 'none',
+						});
+						return;
+					}
+					// 更新头像 URL，假设服务器返回的新头像 URL 在 data.avatarUrl
+					const newAvatarUrl = JSON.parse(data).avatar_url;
+					this.avatarUrl = newAvatarUrl;
+					this.$store.dispatch('getUserInfoSync')
+				} catch (e) {
+					//TODO handle the exception
+					console.log(e);
+				}
+			},
+		}
 	}
 </script>
 

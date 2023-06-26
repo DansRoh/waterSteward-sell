@@ -58,7 +58,7 @@
 			bindInput(key, value) {
 				this.formData[key] = value
 			},
-			handleClickLogin() {
+			async handleClickLogin() {
 				// 校验数据
 				if (!isValidPhoneNumber(this.formData.phone)) {
 					uni.showToast({
@@ -74,13 +74,20 @@
 					})
 					return
 				}
-
-				uni.setStorageSync('isLogin', true)
-				uni.switchTab({
-					url: "/pages/signedClient/signedClient"
-				})
+				const params = {
+					phone: this.formData.phone,
+					code: this.formData.veriCode
+				}
+				const { data, statusCode } = await this.$http('/market/session/sms', 'put', params)
+				if (statusCode === 201) {
+					uni.setStorageSync('isLogin', true)
+					uni.setStorageSync('token', data.token)
+					uni.switchTab({
+						url: "/pages/signedClient/signedClient"
+					})
+				}
 			},
-			handleClickGetVericodeBtn() {
+			async handleClickGetVericodeBtn() {
 				// 校验数据
 				if (!isValidPhoneNumber(this.formData.phone)) {
 					uni.showToast({
@@ -103,6 +110,26 @@
 						num--;
 					}
 				}, 1000)
+
+				// 发请求
+				const {
+					data,
+					statusCode
+				} = await this.$http('/market/verify_codes/login', 'post', {
+					phone: this.formData.phone,
+					debug: true
+				})
+				if (statusCode === 201) {
+					uni.showToast({
+						title: '验证码发送成功',
+						icon: 'success'
+					})
+				} else {
+					uni.showToast({
+						title: '网络错误',
+						icon: 'error'
+					})
+				}
 			},
 			jumpRegister() {
 				uni.navigateTo({

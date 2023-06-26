@@ -57,10 +57,19 @@
 		},
 		data() {
 			return {
-				codeNum: "198777"
 			};
 		},
-		onLoad() {},
+		computed: {
+			userInfo() {
+				return this.$store.state.userInfo
+			},
+			codeNum() {
+				return this.userInfo.refer_code || '000000'
+			}
+		},
+		onLoad() {
+
+		},
 		methods: {
 			onShareAppMessage() {
 				const promise = new Promise(resolve => {
@@ -170,6 +179,7 @@
 							align-items: center;
 							background-color: #fff;
 						}
+
 						.share-btn::after {
 							border: none;
 						}

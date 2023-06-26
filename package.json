@@ -1,6 +1,8 @@
 {
   "dependencies": {
+    "@dw/wx-cropper": "^1.0.6",
     "@vant/weapp": "^1.10.15",
-    "area-data": "^3.1.2"
+    "area-data": "^3.1.2",
+    "vuex": "^4.1.0"
   }
 }

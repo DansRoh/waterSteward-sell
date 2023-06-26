@@ -1,4 +1,5 @@
 import App from './App'
+import store from './store'
 import {
 	request
 } from "./utils/request.js"
@@ -38,6 +39,7 @@ try {
 } catch (error) {}
 
 const app = new Vue({
+	store,
 	...App
 })
 app.$mount()
