@@ -8,11 +8,15 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
 	state: {
-		userInfo: {} // 用户信息
+		userInfo: {}, // 用户信息
+		referCodeQr: '', // 二维码图片访问地址
 	},
 	mutations: {
 		getUserInfo(state, data) {
 			state.userInfo = data
+		},
+		getReferCodeQr(state, data) {
+			state.referCodeQr = data
 		}
 	},
 	actions: {
@@ -26,6 +30,17 @@ const store = new Vuex.Store({
 			console.log('userInfo', data);
 			if (statusCode === 200) {
 				commit('getUserInfo', data)
+			}
+		},
+		async getReferCodeQrSync({
+			commit
+		}) {
+			const {
+				statusCode,
+				data
+			} = await request('/market/profile/refer_code')
+			if (statusCode === 200) {
+				commit('getReferCodeQr', data.refer_code_qr)
 			}
 		}
 	}

@@ -79,7 +79,25 @@
 				"enablePullDownRefresh": false
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/set/set",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "设置",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/changePhone/changePhone",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
@@ -98,6 +116,7 @@
 			"van-area": "/wxcomponents/@vant/area/index",
 			"van-calendar": "/wxcomponents/@vant/calendar/index",
 			"van-steps": "/wxcomponents/@vant/steps/index",
+			"van-dialog": "/wxcomponents/@vant/dialog/index",
 			"van-divider": "/wxcomponents/@vant/divider/index",
 			"van-image": "/wxcomponents/@vant/image/index"
 		}

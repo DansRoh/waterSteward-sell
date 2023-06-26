@@ -3,7 +3,7 @@
 		<view class="mine-bg-banner">
 			<image src="../../static/images/06_mineBg.png" style="width: 100%; height: 100%;" mode=""></image>
 		</view>
-		<image class="set-button" src="../../static/images/09_set.png" mode=""></image>
+		<image @tap="jumpSetPage" class="set-button" src="../../static/images/09_set.png" mode=""></image>
 		<view class="mine-content">
 			<view class="mine-card c26">
 				<view class="avatar-box">
@@ -39,13 +39,6 @@
 		onLoad() {
 		},
 		onShow() {
-			// 判断是否登录的逻辑
-			const isLogin = uni.getStorageSync('isLogin');
-			if (!isLogin) {
-				uni.redirectTo({
-					url: '/pages/login/login'
-				})
-			}
 		},
 		computed: {
 			userInfo() {
@@ -56,6 +49,11 @@
 			}
 		},
 		methods: {
+			jumpSetPage() {
+				uni.navigateTo({
+					url: '/pages/set/set'
+				})
+			},
 			async handleChangeAvatar() {
 				// 选择图片
 				const {
@@ -88,9 +86,7 @@
 						});
 						return;
 					}
-					// 更新头像 URL，假设服务器返回的新头像 URL 在 data.avatarUrl
-					const newAvatarUrl = JSON.parse(data).avatar_url;
-					this.avatarUrl = newAvatarUrl;
+					// 更新头像 URL
 					this.$store.dispatch('getUserInfoSync')
 				} catch (e) {
 					//TODO handle the exception

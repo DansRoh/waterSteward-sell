@@ -2,15 +2,18 @@
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')
-			
+
 			// 登录逻辑
-			const isLogin = uni.getStorageSync('isLogin');
-			if (!isLogin) {
+			const token = uni.getStorageSync('token');
+			if (!token) {
 				uni.redirectTo({
-					url: '/pages/register/register'
+					url: '/pages/login/login'
 				})
 			} else {
 				this.$store.dispatch('getUserInfoSync')
+				uni.switchTab({
+					url: "/pages/signedClient/signedClient"
+				})
 			}
 		},
 		onShow: function() {

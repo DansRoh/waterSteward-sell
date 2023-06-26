@@ -90,10 +90,12 @@
 				const {
 					data,
 					statusCode
-				} = this.$http('/market/profile', 'post', this.userInfo)
-				console.log('stat', statusCode);
+				} = await this.$http('/market/profile', 'post', this.userInfo)
 				if (statusCode === 201) {
-					console.log(data);
+					uni.setStorageSync('token', data.token)
+					uni.switchTab({
+						url: "/pages/signedClient/signedClient"
+					})
 				} else {
 					uni.showToast({
 						title: '网络错误',

@@ -17,7 +17,7 @@
 				</view>
 				<view class="my-code-box">
 					<view class="code-inner">
-
+						<image :src="referCodeQrUrl" mode=""></image>
 					</view>
 					<view class="tac fs28 c5e">
 						我的签约二维码
@@ -65,10 +65,13 @@
 			},
 			codeNum() {
 				return this.userInfo.refer_code || '000000'
+			},
+			referCodeQrUrl() {
+				return this.$store.state.referCodeQr
 			}
 		},
 		onLoad() {
-
+			this.$store.dispatch('getReferCodeQrSync')
 		},
 		methods: {
 			onShareAppMessage() {

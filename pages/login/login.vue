@@ -78,12 +78,20 @@
 					phone: this.formData.phone,
 					code: this.formData.veriCode
 				}
-				const { data, statusCode } = await this.$http('/market/session/sms', 'put', params)
+				const {
+					data,
+					statusCode
+				} = await this.$http('/market/session/sms', 'put', params)
 				if (statusCode === 201) {
-					uni.setStorageSync('isLogin', true)
 					uni.setStorageSync('token', data.token)
 					uni.switchTab({
 						url: "/pages/signedClient/signedClient"
+					})
+				}
+				if (statusCode === 424) {
+					uni.showToast({
+						title: '推广员未注册',
+						icon: 'error'
 					})
 				}
 			},
