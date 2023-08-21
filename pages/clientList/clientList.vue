@@ -6,7 +6,7 @@
 			</view>
 		</Navbar>
 		<view class="wapper-box">
-			
+
 			<view class="top-search-box">
 				<CusInput :value="searchValue" @input="bindInput" @confirm="handleSearch" @tapIcon="handleSearch"
 					custom-class="cus-search-input" placeholder="请输入姓名,电话..." hasBorder icon="/static/images/03_search.png">
@@ -16,76 +16,54 @@
 						:range="timerPickerArray">
 						<view class="fs24 c000">
 							{{timerPickerArray[curPickTimerIdx].name || "最近三个月"}}
-							<van-icon size="25rpx" name="/static/icon/04_del.png"></van-icon>
+							<van-icon size="25rpx" name="/static/images/22_del.png"></van-icon>
 						</view>
 					</picker>
 				</view>
 			</view>
-			
-			<view class="client-list-box">
-				<view class="client-info-card">
+
+			<van-empty v-if="!clientData.length" description="暂无数据" />
+			<view v-else class="client-list-box">
+				<view v-for="item in clientData" :key="item.id" class="client-info-card">
 					<view class="top-status-box">
-						<van-icon size="32rpx" name="/static/icon/37_clock.png"></van-icon>
+						<van-icon size="32rpx" :name="item.curStep===2 ? '/static/images/21_success.png':'/static/images/15_clock.png'"></van-icon>
 						<view class="ml16">
-							待测信号…
+							{{ stateEnum[item.state] }}
 						</view>
 					</view>
 					<view class="steps-inner-box">
-						<van-steps custom-class="custom-van-steps" :steps="steps" :active="curSteps"
+						<van-steps custom-class="custom-van-steps" :steps="steps" :active="item.curStep"
 							active-color="#7A6AF4"></van-steps>
 					</view>
 					<view class="appointment-time">
-						<view class="fs24 c5e">
-							预约测试：
-						</view>
-						<view class="fs32 c000 df mr68">
-							<view class="cFFA212">
-								2023
-							</view>
-							年
-							<view class="cFFA212">
-								1
-							</view>
-							月
-							<view class="cFFA212">
-								24
-							</view>
-							日
-						</view>
-						<view class="fs32 c000 df">
-							还剩
-							<view class="cFFA212">
-								3
-							</view>
-							天
-							<view class="cFFA212">
-								5
-							</view>
-							小时
-						</view>
+						<template v-if="item.curStep === 0">
+							<text class="fs24">预约测试:</text> <text>{{ item.survey_at || '待预约' }}</text> <text>还剩3天4小时</text>
+						</template>
+						<template v-else>
+							<text class="fs24">预约安装:</text> <text>{{ item.install_at || '待预约' }}</text> <text>还剩3天4小时</text>
+						</template>
 					</view>
 					<van-divider />
 					<view class="user-info fs28 c000">
 						<view class="info-item">
-							<van-icon class="left-icon" size="32rpx" name="/static/images/tabbar/03_tab.png"></van-icon>
+							<van-icon class="left-icon" size="32rpx" name="/static/images/16_user.png"></van-icon>
 							<view class="content-box">
-								安欣
+								{{item.address.name}}
 							</view>
 						</view>
 						<view class="info-item">
-							<van-icon class="left-icon" size="32rpx" name="/static/images/tabbar/03_tab.png"></van-icon>
+							<van-icon class="left-icon" size="32rpx" name="/static/images/17_phone.png"></van-icon>
 							<view class="content-box">
-								18739483948
+								{{item.address.phone}}
 							</view>
-							<van-icon class="right-icon" size="32rpx" name="/static/images/tabbar/03_tab.png"></van-icon>
+							<van-icon class="right-icon" size="36rpx" name="/static/images/19_phone.png"></van-icon>
 						</view>
 						<view class="info-item">
-							<van-icon class="left-icon" size="32rpx" name="/static/images/tabbar/03_tab.png"></van-icon>
+							<van-icon class="left-icon" size="32rpx" name="/static/images/18_local.png"></van-icon>
 							<view class="content-box">
-								重庆市渝中区长江路地产大厦2号楼
-								2-14-1
+								{{item.address.region.join('') + item.address.detail}}
 							</view>
-							<van-icon class="right-icon" size="32rpx" name="/static/images/tabbar/03_tab.png"></van-icon>
+							<van-icon class="right-icon" size="36rpx" name="/static/images/20_address.png"></van-icon>
 						</view>
 					</view>
 
@@ -96,7 +74,7 @@
 								选择套餐:
 							</view>
 							<view class="plan">
-								每日鲜
+								{{item.plan.title}}
 							</view>
 						</view>
 						<view class="df aic mt10">
@@ -104,18 +82,24 @@
 								首充金额:
 							</view>
 							<view class="c17DA9C">
-								360元
+								{{item.plan.deposit}}
 							</view>
+							元
 						</view>
 					</view>
 					<van-divider></van-divider>
 					<view class="operator-box fs28 df">
-						<view class="mr10 c828698">
-							运营商选择:
-						</view>
-						<view class="c262626">
-							中国移动
-						</view>
+						<template v-if="item.curStep > 0">
+							<view class="mr10 c828698">
+								运营商选择:
+							</view>
+							<view class="c262626">
+								中国移动
+							</view>
+						</template>
+						<van-button @tap="jumpToUploadSignPhoto(item.id)" v-else color="#7A6AF4" custom-class="upload-btn-class" round>
+							上传信号截图
+						</van-button>
 					</view>
 				</view>
 			</view>
@@ -157,11 +141,64 @@
 						desc: '',
 					},
 				],
-				curSteps: 1,
+				curStep: 1,
+				clientData: [],
+				stateEnum: {
+					pending: '待预约测试信号',
+					survey_scheduled: '待测信号',
+					surveyed: '待安装净水器',
+					install_scheduled: '待安装净水器',
+					installed: '已安装完成'
+				}
 			};
 		},
-		onLoad() {},
+		computed: {},
+		onLoad() {
+			this.getClientList()
+		},
 		methods: {
+			// 获取客户列表
+			async getClientList() {
+				const {
+					data,
+					statusCode
+				} = await this.$http('/market/devices', 'get', {
+					keyword: this.searchValue
+				})
+				// data.records = [{
+				// 	id: "8649acb3-4b70-4d70-9d36-4253a4650f84",
+				// 	name: "净水器1号",
+				// 	state: "survey_scheduled", // pending 待预约测试信号；survey_scheduled 已预约测试信号；surveyed 已完成信号测试；install_scheduled 已预约安装；installed 已安装
+				// 	survey_at: "2023年1月24日",
+				// 	install_at: "2023年1月25日",
+				// 	plan: {
+				// 		id: "套餐 ID",
+				// 		deposit: 350, // 首充金额，单位：元
+				// 		price: "29.0", // 套餐价格，单位：元
+				// 		title: "A套餐", // 套餐标题
+				// 	},
+				// 	address: {
+				// 		id: "dcfbb46c-c11f-4b3e-bc47-f5ec843bd31d",
+				// 		region: [
+				// 			"云南省",
+				// 			"昆明市",
+				// 			"呈贡区"
+				// 		],
+				// 		detail: "测试修改地址",
+				// 		phone: "18672824015"
+				// 	}
+				// }]
+				this.clientData = data.records.map(item => {
+					item.curStep = Object.keys(this.stateEnum).indexOf(item.state)
+					return item
+				})
+				console.log('data', this.clientData);
+			},
+			jumpToUploadSignPhoto(deviceId) {
+				uni.navigateTo({
+					url: `/pages/uploadSignPhoto/uploadSignPhoto?deviceId=${deviceId}`
+				})
+			},
 			pickerChange({
 				detail
 			}) {
@@ -171,6 +208,7 @@
 				this.searchValue = e
 			},
 			handleSearch() {
+				this.getClientList()
 				console.log('搜索', this.searchValue);
 			}
 		}
@@ -215,8 +253,8 @@
 			.client-info-card {
 				width: 688rpx;
 				box-sizing: border-box;
-				padding-top: 16rpx;
-				padding-bottom: 16rpx;
+				padding: 16rpx;
+				margin-bottom: 40rpx;
 				background-color: #fff;
 				border-radius: 16rpx;
 				box-shadow: 0rpx 32rpx 40rpx 0rpx #DAE0EA;
@@ -243,6 +281,7 @@
 					padding: 20rpx 48rpx;
 					padding-bottom: 0;
 					align-items: center;
+					justify-content: space-between;
 				}
 
 				.user-info {
@@ -286,7 +325,12 @@
 				}
 
 				.operator-box {
+					position: relative;
 					padding: 0 32rpx;
+					.upload-btn-class {
+						position: relative;
+						right: -408rpx;
+					}
 				}
 			}
 		}

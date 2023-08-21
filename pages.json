@@ -51,7 +51,7 @@
 		}, {
 			"path": "pages/uploadSignPhoto/uploadSignPhoto",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "上传信号截图",
 				"enablePullDownRefresh": false
 			}
 		}, {
@@ -118,7 +118,8 @@
 			"van-steps": "/wxcomponents/@vant/steps/index",
 			"van-dialog": "/wxcomponents/@vant/dialog/index",
 			"van-divider": "/wxcomponents/@vant/divider/index",
-			"van-image": "/wxcomponents/@vant/image/index"
+			"van-image": "/wxcomponents/@vant/image/index",
+			"van-empty": "/wxcomponents/@vant/empty/index"
 		}
 	},
 	"uniIdRouter": {},

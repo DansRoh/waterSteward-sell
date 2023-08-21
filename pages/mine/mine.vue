@@ -19,7 +19,7 @@
 					我的专属签约码
 				</van-button>
 			</view>
-			<van-cell custom-class="custom-cell" title-class="custom-title" title="结算明细" is-link
+			<van-cell custom-class="custom-cell" title-class="custom-title" title="账户管理" is-link
 				url="/pages/accountManage/accountManage" />
 			<van-cell custom-class="custom-cell" title-class="custom-title" title="客服与反馈" is-link
 				url="/pages/dashboard/index" />

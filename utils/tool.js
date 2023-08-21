@@ -1,6 +1,5 @@
 // 一些常用方法的封装
 
-
 // 调用微信支付
 export const requestPaymentFun = (prepayId, nonceStr, timeStamp, signType, paySign) => {
 	return new Promise((resolve, reject) => {
@@ -73,4 +72,21 @@ export function formatDateTime(dateTimeString) {
 	const minutes = date.getMinutes();
 
 	return `${year}年${month}月${day}日 ${hours}:${minutes.toString().padStart(2, '0')}`;
+}
+
+// 时间格式MM-dd hh:mm:ss
+export function formatDateTime01(date) {
+	const now = new Date(date)
+	const month = now.getMonth() + 1;
+	const day = now.getDate();
+	const hour = now.getHours();
+	const minute = now.getMinutes();
+	const second = now.getSeconds();
+	const monthStr = (month < 10 ? "0" : "") + month;
+	const dayStr = (day < 10 ? "0" : "") + day;
+	const hourStr = (hour < 10 ? "0" : "") + hour;
+	const minuteStr = (minute < 10 ? "0" : "") + minute;
+	const secondStr = (second < 10 ? "0" : "") + second;
+	const timeStr = monthStr + "-" + dayStr + " " + hourStr + ":" + minuteStr + ":" + secondStr;
+	return timeStr
 }
